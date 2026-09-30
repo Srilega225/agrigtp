@@ -1,0 +1,1360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AgriGPT - AI-Powered Smart Farming Assistant</title>
+  <meta name="description" content="AgriGPT is a next-generation AI agriculture assistant helping farmers diagnose crop diseases, get precision crop recommendations, and optimize soil & weather management.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="assets/logo.svg" type="image/svg+xml">
+</head>
+<body class="font-normal theme-light" id="top">
+
+  <!-- Top Announcement Bar with Farmer Accessibility Utilities -->
+  <div class="top-announcement-bar" role="region" aria-label="Quick utilities and announcements">
+    <div class="container announcement-inner">
+      <div class="announcement-left">
+        <span class="pulse-dot"></span>
+        <span class="announcement-text">🌾 <strong>AgriGPT 2.0 Live:</strong> Hyper-local Weather & 98.4% Plant Pathology AI now available!</span>
+      </div>
+      <div class="announcement-right">
+        <!-- Text Size Controls for Elderly / Field Visibility -->
+        <div class="accessibility-ctrls" title="Adjust text size for better readability in sunlight">
+          <span class="acc-label">Text Size:</span>
+          <button type="button" class="btn-text-size" id="btnFontNormal" aria-label="Normal text size">A</button>
+          <button type="button" class="btn-text-size" id="btnFontLarge" aria-label="Large text size">A+</button>
+          <button type="button" class="btn-text-size active" id="btnFontXLarge" aria-label="Extra large text size">A++</button>
+        </div>
+        <!-- High Contrast Sunlight Toggle -->
+        <button type="button" class="btn-sunlight" id="btnSunlightToggle" title="Toggle High-Contrast Field Sunlight Mode">
+          <span class="icon-sun">☀️</span>
+          <span class="text-sun">Sunlight Mode</span>
+        </button>
+        <!-- Language Switcher -->
+        <div class="lang-selector">
+          <select id="langSelect" aria-label="Select preferred language">
+            <option value="en">🌐 English</option>
+            <option value="hi">🌐 हिन्दी (Hindi)</option>
+            <option value="es">🌐 Español</option>
+            <option value="sw">🌐 Kiswahili</option>
+          </select>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Header & Navigation -->
+  <header class="site-header" id="siteHeader">
+    <div class="container header-container">
+      <a href="#top" class="brand-logo" aria-label="AgriGPT Homepage">
+        <div class="logo-icon-wrap">
+          <svg class="logo-svg" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect width="40" height="40" rx="10" fill="url(#leafGrad)"/>
+            <path d="M20 7C14 11 11 17 11 23C11 28 15 32 20 32C25 32 29 28 29 23C29 17 26 11 20 7Z" fill="#E8F5E9"/>
+            <path d="M20 12V28M20 18L15 22M20 22L25 26" stroke="#2E7D32" stroke-width="2.2" stroke-linecap="round"/>
+            <circle cx="29" cy="11" r="4.5" fill="#F59E0B"/>
+            <path d="M29 9L30 11H28L29 9Z" fill="white"/>
+            <defs>
+              <linearGradient id="leafGrad" x1="0" y1="0" x2="40" y2="40" gradientUnits="userSpaceOnUse">
+                <stop stop-color="#10B981"/>
+                <stop offset="1" stop-color="#047857"/>
+              </linearGradient>
+            </defs>
+          </svg>
+        </div>
+        <div class="logo-text">
+          <span class="brand-title">Agri<span class="accent-text">GPT</span></span>
+          <span class="brand-tagline">AI Smart Farming</span>
+        </div>
+      </a>
+
+      <!-- Desktop Navigation Menu -->
+      <nav class="nav-menu" id="navMenu" aria-label="Main Navigation">
+        <ul class="nav-list">
+          <li><a href="#overview" class="nav-link">Overview</a></li>
+          <li><a href="#problem-solution" class="nav-link">Why AgriGPT</a></li>
+          <li><a href="#crop-advisor" class="nav-link">Crop Advisor</a></li>
+          <li><a href="#disease-detector" class="nav-link">Disease Scanner</a></li>
+          <li><a href="#weather-soil" class="nav-link">Soil & Weather</a></li>
+          <li><a href="#market-mandi" class="nav-link">Market Mandi</a></li>
+        </ul>
+        <div class="nav-cta-group mobile-cta">
+          <a href="#disease-detector" class="btn btn-outline-nav">
+            <span class="btn-icon">🔬</span> Scan Leaf
+          </a>
+          <button type="button" class="btn btn-primary-nav" id="btnOpenChat">
+            <span class="btn-icon">💬</span> Ask AgriGPT
+          </button>
+        </div>
+      </nav>
+
+      <!-- Right Header Actions -->
+      <div class="header-actions">
+        <a href="#disease-detector" class="btn btn-outline-nav desktop-only">
+          <span class="btn-icon">🔬</span> Scan Crop
+        </a>
+        <button type="button" class="btn btn-primary desktop-only" id="btnHeaderChat">
+          <span class="btn-icon">💬</span> Ask AI
+        </button>
+        <!-- Mobile Menu Toggle Button -->
+        <button type="button" class="mobile-toggle" id="mobileToggle" aria-label="Toggle navigation menu" aria-expanded="false">
+          <span class="bar"></span>
+          <span class="bar"></span>
+          <span class="bar"></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- HERO SECTION -->
+    <section class="hero-section" id="overview">
+      <div class="hero-bg-shapes" aria-hidden="true">
+        <div class="shape shape-1"></div>
+        <div class="shape shape-2"></div>
+        <div class="shape shape-3"></div>
+      </div>
+      <div class="container hero-grid">
+        <!-- Hero Left Column: Text & CTAs -->
+        <div class="hero-content">
+          <div class="hero-badge">
+            <span class="badge-icon">🌿</span>
+            <span class="badge-text">Next-Gen Agronomy Intelligence 4.0</span>
+            <span class="badge-pill">Free for Farmers</span>
+          </div>
+
+          <h1 class="hero-title">
+            AI-Powered <span class="highlight-text">Smart Farming</span> Assistant
+          </h1>
+
+          <p class="hero-subtitle">
+            Diagnose plant diseases in 3 seconds, predict optimal crop rotations, and receive hyper-local soil and weather advisories in your local language.
+          </p>
+
+          <!-- Interactive Quick Search / Prompt Bar -->
+          <div class="hero-ai-search" id="heroPromptBox">
+            <div class="search-input-wrap">
+              <span class="ai-sparkle">✨</span>
+              <input type="text" id="heroQueryInput" placeholder="Ask AgriGPT: 'How to cure brown leaf spots on paddy?'" aria-label="Ask AgriGPT an agriculture question">
+              <button type="button" id="btnHeroAsk" class="btn-ask-ai" aria-label="Submit question to AgriGPT">
+                <span>Ask AI</span>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+              </button>
+            </div>
+            <!-- Quick Chips -->
+            <div class="quick-prompt-chips">
+              <span class="chips-label">Try asking:</span>
+              <button type="button" class="chip-btn" data-query="Best crops for clay soil with low monsoon rain?">Clay soil low rain</button>
+              <button type="button" class="chip-btn" data-query="My tomato leaves are curling and drying, what to do?">Tomato leaf curl</button>
+              <button type="button" class="chip-btn" data-query="How to increase soil organic carbon naturally?">Boost soil carbon</button>
+            </div>
+          </div>
+
+          <!-- Hero Action Buttons -->
+          <div class="hero-actions">
+            <a href="#crop-advisor" class="btn btn-primary btn-lg pulse-hover">
+              <span class="btn-icon">🌾</span> Plan My Next Crop
+            </a>
+            <a href="#disease-detector" class="btn btn-secondary btn-lg">
+              <span class="btn-icon">📸</span> Scan Plant Disease
+            </a>
+          </div>
+
+          <!-- Trust Badges / Stats -->
+          <div class="hero-stats">
+            <div class="stat-item">
+              <span class="stat-number" data-count="98.4">98.4%</span>
+              <span class="stat-label">Diagnostic Accuracy</span>
+            </div>
+            <div class="stat-divider"></div>
+            <div class="stat-item">
+              <span class="stat-number" data-count="85">85+</span>
+              <span class="stat-label">Crops & Pathogens</span>
+            </div>
+            <div class="stat-divider"></div>
+            <div class="stat-item">
+              <span class="stat-number" data-count="420">420K+</span>
+              <span class="stat-label">Hectares Protected</span>
+            </div>
+            <div class="stat-divider"></div>
+            <div class="stat-item">
+              <span class="stat-number" data-count="35">35%</span>
+              <span class="stat-label">Avg Input Cost Cut</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Hero Right Column: Interactive Diagnostic & Field Simulation Mockup -->
+        <div class="hero-visual">
+          <div class="hero-card-stack">
+            <!-- Main Live AI Scanner Simulation Card -->
+            <div class="card-hero-scanner" id="heroPreviewScanner">
+              <div class="scanner-header">
+                <div class="scanner-dots">
+                  <span class="dot red"></span>
+                  <span class="dot yellow"></span>
+                  <span class="dot green"></span>
+                </div>
+                <div class="scanner-title">
+                  <span class="live-indicator"></span> AgriGPT Vision Engine 4.2
+                </div>
+                <div class="scanner-lang-tag">Dual-Band AI</div>
+              </div>
+
+              <div class="scanner-screen">
+                <div class="leaf-preview-container">
+                  <!-- Visual Leaf Canvas/SVG illustration -->
+                  <svg class="preview-leaf-svg" viewBox="0 0 280 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M140 20C90 40 40 90 50 160C100 175 160 170 230 135C240 85 200 40 140 20Z" fill="#4ADE80" fill-opacity="0.35"/>
+                    <path d="M140 20C90 40 40 90 50 160C100 175 160 170 230 135C240 85 200 40 140 20Z" stroke="#22C55E" stroke-width="3"/>
+                    <!-- Leaf Veins -->
+                    <path d="M60 155Q130 120 220 130" stroke="#16A34A" stroke-width="2" stroke-linecap="round"/>
+                    <path d="M100 138Q120 90 140 22" stroke="#16A34A" stroke-width="2" stroke-linecap="round"/>
+                    <path d="M105 138Q90 100 80 80" stroke="#16A34A" stroke-width="1.5"/>
+                    <path d="M145 105Q160 70 170 50" stroke="#16A34A" stroke-width="1.5"/>
+                    <path d="M175 120Q190 95 210 80" stroke="#16A34A" stroke-width="1.5"/>
+                    <!-- Simulated Disease Lesions -->
+                    <circle cx="120" cy="85" r="14" fill="#B45309" fill-opacity="0.8"/>
+                    <circle cx="120" cy="85" r="8" fill="#78350F"/>
+                    <circle cx="155" cy="115" r="18" fill="#B45309" fill-opacity="0.75"/>
+                    <circle cx="155" cy="115" r="10" fill="#78350F"/>
+                    <circle cx="180" cy="70" r="10" fill="#D97706" fill-opacity="0.85"/>
+                    <!-- Target Focus Overlay Boxes -->
+                    <rect x="100" y="65" width="40" height="40" rx="4" stroke="#EF4444" stroke-width="1.8" stroke-dasharray="4 2" fill="rgba(239,68,68,0.1)"/>
+                    <rect x="135" y="95" width="44" height="42" rx="4" stroke="#EF4444" stroke-width="1.8" stroke-dasharray="4 2" fill="rgba(239,68,68,0.1)"/>
+                  </svg>
+
+                  <!-- Animated Laser Scanner Line -->
+                  <div class="laser-scanner-line" aria-hidden="true"></div>
+
+                  <!-- Detection Overlay Badges -->
+                  <div class="detect-badge badge-confidence">
+                    <span class="badge-dot green"></span> 97.8% Match
+                  </div>
+                  <div class="detect-badge badge-target">
+                    Target: Tomato Early Blight
+                  </div>
+                </div>
+
+                <!-- Diagnosis Live Result Card inside Mockup -->
+                <div class="mockup-diagnosis-info">
+                  <div class="diag-header-row">
+                    <div>
+                      <h4 class="diag-title">Alternaria solani (Early Blight)</h4>
+                      <span class="diag-severity"><span class="pill-alert warning">Moderate Risk</span> • Immediate Spray Window</span>
+                    </div>
+                    <button type="button" class="btn-audio-speak" id="btnAudioDemo" title="Listen to advisory in voice">
+                      🔊 Listen
+                    </button>
+                  </div>
+                  <div class="diag-remedy-preview">
+                    <span class="remedy-tag organic">🌱 Organic:</span> Spray Copper oxychloride or neem kernel extract (5%).
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Floating Micro Cards -->
+            <div class="floating-badge badge-weather float-animation-1">
+              <div class="float-icon">⛅</div>
+              <div class="float-info">
+                <span class="float-title">Optimal Sowing Window</span>
+                <span class="float-sub">Soil moisture 68% • Rain in 3 days</span>
+              </div>
+            </div>
+
+            <div class="floating-badge badge-yield float-animation-2">
+              <div class="float-icon">📈</div>
+              <div class="float-info">
+                <span class="float-title">+32% Expected Yield</span>
+                <span class="float-sub">Recommended: Chickpea Crop Rotation</span>
+              </div>
+            </div>
+
+            <div class="floating-badge badge-voice float-animation-3">
+              <div class="float-icon">🎙️</div>
+              <div class="float-info">
+                <span class="float-title">Voice AI Enabled</span>
+                <span class="float-sub">Speak questions in 12+ dialects</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- MANDI COMMODITY LIVE TICKER BAR -->
+    <section class="mandi-ticker-bar" aria-label="Real-time Mandi Market Prices">
+      <div class="container-fluid ticker-wrap">
+        <div class="ticker-heading">
+          <span class="ticker-live-icon">● LIVE</span>
+          <span>MARKET MANDI:</span>
+        </div>
+        <div class="ticker-track">
+          <div class="ticker-item"><span class="crop-name">Wheat (Sharbati)</span>: <span class="crop-price">₹2,480/q</span> <span class="trend up">▲ +2.4%</span></div>
+          <div class="ticker-item"><span class="crop-name">Basmati Paddy</span>: <span class="crop-price">₹3,850/q</span> <span class="trend up">▲ +1.8%</span></div>
+          <div class="ticker-item"><span class="crop-name">Yellow Corn (Maize)</span>: <span class="crop-price">₹2,120/q</span> <span class="trend down">▼ -0.6%</span></div>
+          <div class="ticker-item"><span class="crop-name">Soybean</span>: <span class="crop-price">₹4,620/q</span> <span class="trend up">▲ +3.1%</span></div>
+          <div class="ticker-item"><span class="crop-name">Cotton (Medium Staple)</span>: <span class="crop-price">₹7,150/q</span> <span class="trend up">▲ +0.9%</span></div>
+          <div class="ticker-item"><span class="crop-name">Red Onion</span>: <span class="crop-price">₹1,950/q</span> <span class="trend down">▼ -2.2%</span></div>
+          <div class="ticker-item"><span class="crop-name">Mustard Seed</span>: <span class="crop-price">₹5,400/q</span> <span class="trend up">▲ +1.5%</span></div>
+          <!-- Duplicate for seamless scroll -->
+          <div class="ticker-item"><span class="crop-name">Wheat (Sharbati)</span>: <span class="crop-price">₹2,480/q</span> <span class="trend up">▲ +2.4%</span></div>
+          <div class="ticker-item"><span class="crop-name">Basmati Paddy</span>: <span class="crop-price">₹3,850/q</span> <span class="trend up">▲ +1.8%</span></div>
+          <div class="ticker-item"><span class="crop-name">Yellow Corn (Maize)</span>: <span class="crop-price">₹2,120/q</span> <span class="trend down">▼ -0.6%</span></div>
+          <div class="ticker-item"><span class="crop-name">Soybean</span>: <span class="crop-price">₹4,620/q</span> <span class="trend up">▲ +3.1%</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PROBLEM VS SOLUTION SECTION -->
+    <section class="section problem-solution-section" id="problem-solution">
+      <div class="container">
+        <div class="section-header text-center">
+          <span class="section-tag">Challenges & Breakthrough</span>
+          <h2 class="section-title">The Real Farming Struggle & The <span class="accent-text">AgriGPT Solution</span></h2>
+          <p class="section-subtitle">
+            Modern agriculture faces extreme climate variability, delayed disease identification, and skyrocketing input costs. Here is how AgriGPT bridges the gap.
+          </p>
+        </div>
+
+        <div class="comparison-grid">
+          <!-- The Problem Card -->
+          <div class="comparison-card card-problem">
+            <div class="card-head">
+              <div class="icon-circle icon-danger">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 9v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+              </div>
+              <div>
+                <h3 class="card-headline">Traditional Farming Hurdles</h3>
+                <span class="card-subhead">High risk, guesswork & wasted capital</span>
+              </div>
+            </div>
+            <ul class="comparison-list">
+              <li>
+                <div class="list-bullet bullet-red">✕</div>
+                <div class="list-text">
+                  <strong>40% Crop Losses to Untreated Diseases:</strong> Pathogens spread quickly before human agricultural officers can physically reach distant rural farms.
+                </div>
+              </li>
+              <li>
+                <div class="list-bullet bullet-red">✕</div>
+                <div class="list-text">
+                  <strong>Blind Fertilizer Spending:</strong> Applying excess chemical fertilizers without soil testing burns soil organic matter and drains farmer savings.
+                </div>
+              </li>
+              <li>
+                <div class="list-bullet bullet-red">✕</div>
+                <div class="list-text">
+                  <strong>Erratic Rainfall & Temperature Shocks:</strong> Generic regional forecasts fail to give micro-farm level rain and wind advisory.
+                </div>
+              </li>
+              <li>
+                <div class="list-bullet bullet-red">✕</div>
+                <div class="list-text">
+                  <strong>Language & Literacy Barriers:</strong> Complex technical research journals are inaccessible to smallholder farmers speaking local vernaculars.
+                </div>
+              </li>
+            </ul>
+            <div class="comparison-footer footer-problem">
+              <span class="metric-highlight">Result:</span> Low profit margins and high debt cycles for farming families.
+            </div>
+          </div>
+
+          <!-- The Solution Card -->
+          <div class="comparison-card card-solution">
+            <div class="popular-ribbon">AgriGPT Advantage</div>
+            <div class="card-head">
+              <div class="icon-circle icon-success">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+              </div>
+              <div>
+                <h3 class="card-headline">AgriGPT AI-Powered Solution</h3>
+                <span class="card-subhead">Instant, precision-driven agronomy in your hand</span>
+              </div>
+            </div>
+            <ul class="comparison-list">
+              <li>
+                <div class="list-bullet bullet-green">✓</div>
+                <div class="list-text">
+                  <strong>3-Second Leaf Vision Diagnosis:</strong> Snap a photo to pinpoint fungi, bacteria, viruses or nutrient deficiencies with 98.4% clinical precision.
+                </div>
+              </li>
+              <li>
+                <div class="list-bullet bullet-green">✓</div>
+                <div class="list-text">
+                  <strong>Targeted Bio & Organic Prescriptions:</strong> Cut expensive chemical sprays by up to 38% using precise dosage and organic eco-remedies.
+                </div>
+              </li>
+              <li>
+                <div class="list-bullet bullet-green">✓</div>
+                <div class="list-text">
+                  <strong>Hyper-Local Soil & Weather Guidance:</strong> Know exactly which hour to spray, irrigate, or sow based on real-time micro-climate metrics.
+                </div>
+              </li>
+              <li>
+                <div class="list-bullet bullet-green">✓</div>
+                <div class="list-text">
+                  <strong>Voice-First Vernacular AI:</strong> Farmers can speak naturally in Hindi, English, Spanish or regional tongues and get voice responses instantly.
+                </div>
+              </li>
+            </ul>
+            <div class="comparison-footer footer-solution">
+              <span class="metric-highlight">Result:</span> Up to +35% higher net yields and verified sustainable soil health.
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 1: CROP RECOMMENDATION ENGINE -->
+    <section class="section crop-advisor-section" id="crop-advisor">
+      <div class="container">
+        <div class="section-header text-center">
+          <span class="section-tag">AI Crop Recommendation</span>
+          <h2 class="section-title">Smart Crop & Rotation Advisor</h2>
+          <p class="section-subtitle">
+            Input your soil type, climate, water availability, and budget. Our agronomy algorithm calculates the highest yield and profit varieties for your exact conditions.
+          </p>
+        </div>
+
+        <div class="advisor-container">
+          <!-- Left: Input Configuration Form -->
+          <div class="advisor-form-card">
+            <div class="form-header">
+              <div class="form-title">
+                <span class="form-icon">🌱</span>
+                <h3>Field Parameters</h3>
+              </div>
+              <!-- Quick Preset Buttons -->
+              <div class="preset-group">
+                <span class="preset-label">Quick Presets:</span>
+                <button type="button" class="btn-preset" data-preset="monsoon-alluvial">Monsoon Alluvial</button>
+                <button type="button" class="btn-preset" data-preset="arid-cotton">Arid Black Soil</button>
+                <button type="button" class="btn-preset" data-preset="horticulture">High-Profit Veg</button>
+              </div>
+            </div>
+
+            <form id="cropAdvisorForm" class="advisor-form">
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="soilTypeSelect">
+                    <span class="label-icon">🟤</span> Soil Type
+                  </label>
+                  <select id="soilTypeSelect" required>
+                    <option value="alluvial" selected>Alluvial Soil (Loamy / Fertile)</option>
+                    <option value="black">Black Clay Soil (Regur / High Moisture)</option>
+                    <option value="red">Red & Yellow Loam (Good Drainage)</option>
+                    <option value="sandy">Sandy Loam / Arid Soil</option>
+                    <option value="laterite">Laterite Soil (Acidic / High Rain)</option>
+                  </select>
+                </div>
+
+                <div class="form-group">
+                  <label for="seasonSelect">
+                    <span class="label-icon">🗓️</span> Cropping Season
+                  </label>
+                  <select id="seasonSelect" required>
+                    <option value="kharif" selected>Kharif / Monsoon (Jun - Oct)</option>
+                    <option value="rabi">Rabi / Winter (Oct - Mar)</option>
+                    <option value="zaid">Zaid / Summer (Mar - Jun)</option>
+                    <option value="perennial">Perennial / All Season</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="waterSelect">
+                    <span class="label-icon">💧</span> Water & Irrigation Access
+                  </label>
+                  <select id="waterSelect" required>
+                    <option value="high">High (Assured Canal / Borewell)</option>
+                    <option value="medium" selected>Medium (Drip / Sprinkler / Tank)</option>
+                    <option value="low">Low (Strictly Rainfed / Dryland)</option>
+                  </select>
+                </div>
+
+                <div class="form-group">
+                  <label for="farmSizeSelect">
+                    <span class="label-icon">🚜</span> Land Holding Size
+                  </label>
+                  <select id="farmSizeSelect">
+                    <option value="small" selected>Smallholder (< 2.5 Acres)</option>
+                    <option value="medium">Medium Farm (2.5 - 10 Acres)</option>
+                    <option value="large">Commercial Farm (10+ Acres)</option>
+                  </select>
+                </div>
+              </div>
+
+              <!-- Interactive Sliders for Soil pH & Budget -->
+              <div class="form-row">
+                <div class="form-group">
+                  <div class="slider-header">
+                    <label for="soilPhRange"><span class="label-icon">🧪</span> Soil pH Level: <strong id="phDisplay">6.5</strong></label>
+                    <span class="soil-state-pill" id="phStatusPill">Optimal Neutral</span>
+                  </div>
+                  <input type="range" id="soilPhRange" min="4.5" max="9.0" step="0.1" value="6.5" class="custom-range">
+                  <div class="range-marks">
+                    <span>4.5 (Acidic)</span>
+                    <span>7.0 (Neutral)</span>
+                    <span>9.0 (Alkaline)</span>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <div class="slider-header">
+                    <label for="targetGoal"><span class="label-icon">🎯</span> Primary Farming Objective</label>
+                  </div>
+                  <select id="targetGoal">
+                    <option value="max-profit" selected>Maximum Net Cash Profit</option>
+                    <option value="low-risk">Low Risk / Climate Resilient</option>
+                    <option value="soil-regen">Soil Health & Nitrogen Fixing</option>
+                    <option value="fast-cash">Fast 60-90 Day Cash Harvest</option>
+                  </select>
+                </div>
+              </div>
+
+              <button type="submit" class="btn btn-primary btn-block btn-generate-crops" id="btnSubmitCrop">
+                <span class="btn-icon">⚡</span> Calculate AI Crop Recommendations
+              </button>
+            </form>
+          </div>
+
+          <!-- Right: AI Recommendation Results Box -->
+          <div class="advisor-results-card" id="cropResultsWrapper">
+            <div class="results-header">
+              <div>
+                <span class="result-badge">AI Synthesis Ready</span>
+                <h3 class="results-title">Recommended Crops For Your Field</h3>
+              </div>
+              <div class="match-score-summary">
+                <span class="score-circle">98%</span>
+                <span class="score-text">Model Match</span>
+              </div>
+            </div>
+
+            <!-- Dynamic Crop Cards will be rendered here via JS -->
+            <div class="crop-cards-list" id="cropCardsContainer">
+              <!-- Rendered via script.js -->
+            </div>
+
+            <!-- Companion Planting & Rotation Bonus Advisory -->
+            <div class="rotation-bonus-box" id="rotationBonusBox">
+              <div class="bonus-icon">💡</div>
+              <div class="bonus-content">
+                <strong>Agronomist Pro-Tip:</strong>
+                <span id="rotationTipText">Planting legumes (Chickpea or Moong bean) after cereals fixes up to 45kg atmospheric nitrogen/hectare, reducing your urea bill next season!</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 2: PLANT DISEASE DETECTION SECTION -->
+    <section class="section disease-section" id="disease-detector">
+      <div class="container">
+        <div class="section-header text-center">
+          <span class="section-tag">AI Computer Vision Scanner</span>
+          <h2 class="section-title">Instant Plant Disease Diagnostic</h2>
+          <p class="section-subtitle">
+            Don't let infections wipe out your crop. Upload or select a leaf specimen to detect fungal, bacterial, or viral pathogens in seconds, backed by organic and chemical cure protocols.
+          </p>
+        </div>
+
+        <div class="disease-detector-grid">
+          <!-- Left: Upload & Interactive Sample Leaves -->
+          <div class="detector-upload-pane">
+            <!-- Drag and drop zone -->
+            <div class="drop-zone" id="dropZone" tabindex="0" role="button" aria-label="Drop leaf image here or click to browse">
+              <input type="file" id="leafFileInput" accept="image/*" class="file-input-hidden">
+              <div class="drop-zone-idle" id="dropIdleState">
+                <div class="drop-icon-pulse">
+                  <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="2" stroke-linecap="round"><path d="M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.242M12 12v9m-4-4l4-4 4 4"/></svg>
+                </div>
+                <h4 class="drop-title">Upload Leaf Photo or Drag & Drop</h4>
+                <p class="drop-sub">Supports JPG, PNG, WEBP • Max 15MB</p>
+                <div class="drop-buttons">
+                  <button type="button" class="btn btn-outline btn-sm" id="btnBrowseFile">📁 Choose File</button>
+                  <button type="button" class="btn btn-secondary btn-sm" id="btnCameraSim">📷 Use Camera</button>
+                </div>
+              </div>
+
+              <!-- Uploaded / Active Preview State with Scanning HUD -->
+              <div class="drop-zone-active hidden" id="dropActiveState">
+                <div class="scanning-canvas-wrapper">
+                  <img id="activeLeafImage" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 80 80'><rect width='80' height='80' fill='%23F0FDF4'/><path d='M40 10C24 16 14 32 16 54C32 60 52 56 68 44C70 28 58 14 40 10Z' fill='%2386EFAC'/><circle cx='34' cy='30' r='6' fill='%2392400E'/><circle cx='48' cy='42' r='7' fill='%2392400E'/></svg>" alt="Specimen for disease analysis" class="preview-img">
+                  <!-- Animated Scanning Laser HUD -->
+                  <div class="laser-scanner" id="scannerLaserBar"></div>
+                  <div class="scanning-crosshairs"></div>
+                  <div class="scanner-status-pill" id="scannerStatusPill">
+                    <span class="pulse-indicator"></span> Scanning neural patterns...
+                  </div>
+                </div>
+                <button type="button" class="btn-reset-scan" id="btnResetScan" title="Scan another image">✕ Clear & Select Another</button>
+              </div>
+            </div>
+
+            <!-- Instant Sample Leaves Picker (Zero upload required to test immediately!) -->
+            <div class="sample-leaves-section">
+              <div class="sample-title-row">
+                <span class="sample-label">Or Click a Field Sample to Test Instantly:</span>
+                <span class="sample-hint">Click any photo below ⬇</span>
+              </div>
+              <div class="sample-leaves-grid" id="sampleLeavesList">
+                <!-- Sample 1: Tomato Early Blight -->
+                <button type="button" class="sample-leaf-card active" data-sample="tomato-blight" aria-label="Test Tomato Early Blight sample">
+                  <div class="sample-thumb-wrap">
+                    <svg viewBox="0 0 80 80" class="sample-svg">
+                      <rect width="80" height="80" rx="8" fill="#F0FDF4"/>
+                      <path d="M40 10C24 16 14 32 16 54C32 60 52 56 68 44C70 28 58 14 40 10Z" fill="#86EFAC"/>
+                      <circle cx="34" cy="30" r="6" fill="#92400E"/>
+                      <circle cx="34" cy="30" r="3" fill="#451A03"/>
+                      <circle cx="48" cy="42" r="7" fill="#92400E"/>
+                      <circle cx="48" cy="42" r="3" fill="#451A03"/>
+                      <circle cx="28" cy="48" r="4" fill="#D97706"/>
+                    </svg>
+                  </div>
+                  <div class="sample-desc">
+                    <span class="sample-crop">Tomato</span>
+                    <span class="sample-name">Early Blight</span>
+                  </div>
+                </button>
+
+                <!-- Sample 2: Rice Bacterial Blight -->
+                <button type="button" class="sample-leaf-card" data-sample="rice-blight" aria-label="Test Rice Bacterial Blight sample">
+                  <div class="sample-thumb-wrap">
+                    <svg viewBox="0 0 80 80" class="sample-svg">
+                      <rect width="80" height="80" rx="8" fill="#F0FDF4"/>
+                      <path d="M40 8C32 20 28 45 34 72C40 73 48 70 52 64C48 40 46 20 40 8Z" fill="#86EFAC"/>
+                      <path d="M33 22L47 38" stroke="#D97706" stroke-width="3" stroke-linecap="round"/>
+                      <path d="M35 34L45 46" stroke="#B45309" stroke-width="2.5" stroke-linecap="round"/>
+                      <path d="M36 50L43 60" stroke="#78350F" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                  </div>
+                  <div class="sample-desc">
+                    <span class="sample-crop">Paddy / Rice</span>
+                    <span class="sample-name">Bacterial Streak</span>
+                  </div>
+                </button>
+
+                <!-- Sample 3: Corn Rust -->
+                <button type="button" class="sample-leaf-card" data-sample="corn-rust" aria-label="Test Corn Common Rust sample">
+                  <div class="sample-thumb-wrap">
+                    <svg viewBox="0 0 80 80" class="sample-svg">
+                      <rect width="80" height="80" rx="8" fill="#FEF3C7"/>
+                      <path d="M20 70C22 45 32 20 58 10C56 30 50 55 40 70Z" fill="#FDE047"/>
+                      <ellipse cx="38" cy="35" rx="3" ry="5" fill="#B45309"/>
+                      <ellipse cx="44" cy="45" rx="3" ry="6" fill="#B45309"/>
+                      <ellipse cx="32" cy="55" rx="2.5" ry="4" fill="#92400E"/>
+                      <ellipse cx="46" cy="25" rx="2" ry="4" fill="#B45309"/>
+                    </svg>
+                  </div>
+                  <div class="sample-desc">
+                    <span class="sample-crop">Corn / Maize</span>
+                    <span class="sample-name">Common Rust</span>
+                  </div>
+                </button>
+
+                <!-- Sample 4: Apple Scab -->
+                <button type="button" class="sample-leaf-card" data-sample="apple-scab" aria-label="Test Apple Scab sample">
+                  <div class="sample-thumb-wrap">
+                    <svg viewBox="0 0 80 80" class="sample-svg">
+                      <rect width="80" height="80" rx="8" fill="#F0FDF4"/>
+                      <path d="M40 12C20 20 16 45 25 65C45 68 62 58 64 35C62 20 52 14 40 12Z" fill="#A7F3D0"/>
+                      <circle cx="36" cy="32" r="6" fill="#4B5563"/>
+                      <circle cx="48" cy="44" r="8" fill="#374151"/>
+                      <circle cx="28" cy="48" r="5" fill="#4B5563"/>
+                    </svg>
+                  </div>
+                  <div class="sample-desc">
+                    <span class="sample-crop">Apple</span>
+                    <span class="sample-name">Apple Scab</span>
+                  </div>
+                </button>
+
+                <!-- Sample 5: Healthy Soybean Baseline -->
+                <button type="button" class="sample-leaf-card" data-sample="healthy-leaf" aria-label="Test Healthy Soybean sample">
+                  <div class="sample-thumb-wrap">
+                    <svg viewBox="0 0 80 80" class="sample-svg">
+                      <rect width="80" height="80" rx="8" fill="#ECFDF5"/>
+                      <path d="M40 10C22 18 16 42 24 64C42 66 60 56 64 38C62 20 52 12 40 10Z" fill="#22C55E"/>
+                      <path d="M26 62Q40 40 54 18" stroke="#15803D" stroke-width="2"/>
+                      <path d="M35 48Q30 38 25 32" stroke="#15803D" stroke-width="1.5"/>
+                      <path d="M42 38Q48 30 52 26" stroke="#15803D" stroke-width="1.5"/>
+                    </svg>
+                  </div>
+                  <div class="sample-desc">
+                    <span class="sample-crop">Soybean</span>
+                    <span class="sample-name">Vibrant Healthy</span>
+                  </div>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right: Comprehensive AI Diagnostic & Cure Report -->
+          <div class="detector-report-pane">
+            <div class="report-card" id="diagnosisReportCard">
+              <div class="report-header">
+                <div class="report-meta">
+                  <span class="tag-ai-certified">🌿 AgriGPT Verified Diagnosis</span>
+                  <h3 class="diagnosis-name" id="diagCropDisease">Tomato: Early Blight (Alternaria solani)</h3>
+                  <div class="diagnosis-sub-row">
+                    <span class="pathogen-type" id="diagPathogen">Fungal Pathogen</span>
+                    <span class="bullet-sep">•</span>
+                    <span class="time-stamp" id="diagTimestamp">Analyzed in 0.42 seconds</span>
+                  </div>
+                </div>
+
+                <!-- Circular Confidence Gauge -->
+                <div class="confidence-gauge" title="AI Confidence Level">
+                  <div class="gauge-ring">
+                    <svg viewBox="0 0 36 36" class="circular-chart">
+                      <path class="circle-bg" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"/>
+                      <path class="circle stroke-green" id="gaugeCircle" stroke-dasharray="98.2, 100" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"/>
+                      <text x="18" y="20.35" class="percentage" id="gaugePercentText">98%</text>
+                    </svg>
+                  </div>
+                  <span class="gauge-label">Confidence</span>
+                </div>
+              </div>
+
+              <!-- Severity Status Bar -->
+              <div class="severity-status-box" id="severityStatusBox">
+                <div class="severity-info">
+                  <span class="sev-label">Infestation Severity:</span>
+                  <strong class="sev-level warning" id="severityLevelText">Moderate Risk (Stage 2)</strong>
+                </div>
+                <div class="severity-meter">
+                  <div class="meter-bar" id="severityMeterBar" style="width: 60%;"></div>
+                </div>
+              </div>
+
+              <!-- Symptoms Checklist -->
+              <div class="report-section">
+                <h4 class="report-section-title">
+                  <span class="title-icon">🔍</span> Observed Clinical Symptoms
+                </h4>
+                <ul class="symptoms-list" id="symptomsList">
+                  <li>Concentric dark brown "target board" rings on older lower leaves.</li>
+                  <li>Surrounding yellow chlorotic halos around lesions.</li>
+                  <li>Premature defoliation starting from base towards upper foliage.</li>
+                </ul>
+              </div>
+
+              <!-- Dual Remedies: Organic vs Chemical -->
+              <div class="remedies-tabs">
+                <div class="tab-buttons">
+                  <button type="button" class="tab-btn active" id="tabBtnOrganic" data-tab="organic">
+                    🌱 Organic & Biological Remedies (Recommended)
+                  </button>
+                  <button type="button" class="tab-btn" id="tabBtnChemical" data-tab="chemical">
+                    🧪 Chemical Fungicide Protocol
+                  </button>
+                </div>
+
+                <div class="tab-content active" id="tabContentOrganic">
+                  <div class="remedy-card organic-tint">
+                    <div class="remedy-head">
+                      <span class="remedy-badge">Zero Chemical Residue</span>
+                      <span class="safety-tag safe">Safe for Pollinators</span>
+                    </div>
+                    <ul class="remedy-steps" id="organicStepsList">
+                      <li><strong>Neem Oil Emulsion:</strong> Mix 5ml cold-pressed pure neem oil + 2ml liquid soap per liter of water. Spray thoroughly under and over leaves every 5 days.</li>
+                      <li><strong>Trichoderma viride Bio-Agent:</strong> Apply 5g/liter foliar spray in the evening to outcompete fungal spores naturally.</li>
+                      <li><strong>Sanitation:</strong> Prune and incinerate lower infected foliage immediately. Never put diseased leaves into compost.</li>
+                    </ul>
+                  </div>
+                </div>
+
+                <div class="tab-content hidden" id="tabContentChemical">
+                  <div class="remedy-card chemical-tint">
+                    <div class="remedy-head">
+                      <span class="remedy-badge alert">Immediate Intervention</span>
+                      <span class="safety-tag warning">Wear Mask & Gloves</span>
+                    </div>
+                    <ul class="remedy-steps" id="chemicalStepsList">
+                      <li><strong>Fungicide Spray:</strong> Mancozeb 75% WP @ 2.5g per liter OR Chlorothalonil 75% WP @ 2g per liter.</li>
+                      <li><strong>Application Timing:</strong> Spray early morning when wind speed is under 8 km/h. Do not spray if rain is forecast within 4 hours.</li>
+                      <li><strong>Waiting Period (PHI):</strong> Maintain a 7-day pre-harvest interval before picking fruits for market.</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Action Bar: Voice Listen, Download Advisory, Ask Followup -->
+              <div class="report-actions">
+                <button type="button" class="btn btn-outline" id="btnSpeakDiagnosis">
+                  <span class="btn-icon">🔊</span> Read Aloud
+                </button>
+                <button type="button" class="btn btn-secondary" id="btnDownloadAdvisory">
+                  <span class="btn-icon">📄</span> Save Treatment Plan
+                </button>
+                <button type="button" class="btn btn-primary" id="btnAskDiagnosisChat">
+                  <span class="btn-icon">💬</span> Ask Follow-up Questions
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 3: WEATHER & SOIL INTELLIGENCE SECTION -->
+    <section class="section weather-soil-section" id="weather-soil">
+      <div class="container">
+        <div class="section-header text-center">
+          <span class="section-tag">Hyper-Local Agronomy Metrics</span>
+          <h2 class="section-title">Precision Soil & Weather Intelligence</h2>
+          <p class="section-subtitle">
+            Combines satellite radar, micro-meteorology, and soil telemetry to help you time every irrigation, spray, and fertilization event with pinpoint precision.
+          </p>
+        </div>
+
+        <!-- Location Preset Selector -->
+        <div class="location-switcher-bar">
+          <div class="loc-label">
+            <span class="loc-pin">📍</span> <span>Selected Farm Micro-Zone:</span>
+          </div>
+          <div class="location-chips" id="locationChips">
+            <button type="button" class="loc-chip active" data-loc="punjab">Punjab Alluvial Plains (Ludhiana)</button>
+            <button type="button" class="loc-chip" data-loc="deccan">Deccan Black Soil (Maharashtra)</button>
+            <button type="button" class="loc-chip" data-loc="karnataka">Southern Red Loam (Karnataka)</button>
+            <button type="button" class="loc-chip" data-loc="ganga">Ganges Delta (West Bengal)</button>
+            <button type="button" class="btn-loc-detect" id="btnDetectGps">📡 Detect My GPS</button>
+          </div>
+        </div>
+
+        <div class="weather-soil-dashboard">
+          <!-- Left: Weather Widget -->
+          <div class="dash-card weather-card">
+            <div class="dash-card-header">
+              <div>
+                <span class="dash-sub">Current Micro-Climate</span>
+                <h3 class="dash-title" id="weatherZoneTitle">Ludhiana Agro-Zone</h3>
+              </div>
+              <div class="weather-icon-live" id="weatherMainIcon">⛅</div>
+            </div>
+
+            <div class="current-temp-row">
+              <div class="temp-big" id="currentTempText">28°C</div>
+              <div class="temp-meta">
+                <span class="condition-name" id="currentConditionText">Partly Cloudy</span>
+                <span class="temp-range">High 32°C • Low 21°C</span>
+              </div>
+            </div>
+
+            <!-- Weather Metric Cards -->
+            <div class="weather-metrics-grid">
+              <div class="w-metric">
+                <span class="wm-icon">💧</span>
+                <span class="wm-val" id="humidityVal">68%</span>
+                <span class="wm-label">Humidity</span>
+              </div>
+              <div class="w-metric">
+                <span class="wm-icon">🌧️</span>
+                <span class="wm-val" id="rainProbVal">15%</span>
+                <span class="wm-label">Rain Chance</span>
+              </div>
+              <div class="w-metric">
+                <span class="wm-icon">💨</span>
+                <span class="wm-val" id="windVal">9 km/h</span>
+                <span class="wm-label">Wind Speed</span>
+              </div>
+              <div class="w-metric">
+                <span class="wm-icon">☀️</span>
+                <span class="wm-val" id="uvVal">6 (Mod)</span>
+                <span class="wm-label">Solar UV</span>
+              </div>
+            </div>
+
+            <!-- 5-Day Smart Farming Spray & Irrigation Planner -->
+            <div class="forecast-planner">
+              <h4 class="forecast-title">5-Day Field Activity Advisory</h4>
+              <div class="forecast-days" id="forecastDaysContainer">
+                <!-- Injected via script.js -->
+              </div>
+            </div>
+          </div>
+
+          <!-- Right: Soil Telemetry & N-P-K Health Widget -->
+          <div class="dash-card soil-card">
+            <div class="dash-card-header">
+              <div>
+                <span class="dash-sub">Soil Telemetry & Vital Sensors</span>
+                <h3 class="dash-title">Root-Zone Telemetry</h3>
+              </div>
+              <div class="soil-health-badge" id="soilOverallStatus">Good Balance</div>
+            </div>
+
+            <!-- Soil Moisture Dial / Gauge -->
+            <div class="soil-vital-row">
+              <div class="vital-item">
+                <div class="vital-label-wrap">
+                  <span class="v-icon">💧</span>
+                  <span class="v-title">Soil Moisture (Depth 15cm)</span>
+                </div>
+                <div class="v-bar-track">
+                  <div class="v-bar-fill fill-blue" id="moistureBar" style="width: 65%;"></div>
+                </div>
+                <div class="v-meta">
+                  <span id="moistureText">65% (Adequate)</span>
+                  <span class="v-hint">Next irrigation in: <strong>48 hrs</strong></span>
+                </div>
+              </div>
+
+              <div class="vital-item">
+                <div class="vital-label-wrap">
+                  <span class="v-icon">🌡️</span>
+                  <span class="v-title">Root Temperature</span>
+                </div>
+                <div class="v-bar-track">
+                  <div class="v-bar-fill fill-amber" id="soilTempBar" style="width: 52%;"></div>
+                </div>
+                <div class="v-meta">
+                  <span id="soilTempText">23.5°C (Optimal for root uptake)</span>
+                  <span class="v-hint">Microbial Activity: <strong>Peak</strong></span>
+                </div>
+              </div>
+            </div>
+
+            <!-- N-P-K (Nitrogen, Phosphorus, Potassium) Balance -->
+            <div class="npk-box">
+              <h4 class="npk-title">
+                <span>NPK Macronutrient Balance</span>
+                <span class="npk-sub">Target for healthy cereal/pulse yield</span>
+              </h4>
+              <div class="npk-meters-grid">
+                <!-- Nitrogen -->
+                <div class="npk-col">
+                  <div class="npk-letter n-color">N</div>
+                  <div class="npk-name">Nitrogen</div>
+                  <div class="npk-cylinder">
+                    <div class="npk-level" id="levelN" style="height: 55%;"></div>
+                  </div>
+                  <div class="npk-reading" id="textN">240 kg/ha</div>
+                  <span class="npk-state medium">Medium</span>
+                </div>
+
+                <!-- Phosphorus -->
+                <div class="npk-col">
+                  <div class="npk-letter p-color">P</div>
+                  <div class="npk-name">Phosphorus</div>
+                  <div class="npk-cylinder">
+                    <div class="npk-level" id="levelP" style="height: 70%;"></div>
+                  </div>
+                  <div class="npk-reading" id="textP">38 kg/ha</div>
+                  <span class="npk-state optimal">Optimal</span>
+                </div>
+
+                <!-- Potassium -->
+                <div class="npk-col">
+                  <div class="npk-letter k-color">K</div>
+                  <div class="npk-name">Potassium</div>
+                  <div class="npk-cylinder">
+                    <div class="npk-level" id="levelK" style="height: 82%;"></div>
+                  </div>
+                  <div class="npk-reading" id="textK">285 kg/ha</div>
+                  <span class="npk-state optimal">High</span>
+                </div>
+
+                <!-- Organic Carbon -->
+                <div class="npk-col">
+                  <div class="npk-letter c-color">OC</div>
+                  <div class="npk-name">Org. Carbon</div>
+                  <div class="npk-cylinder">
+                    <div class="npk-level" id="levelOC" style="height: 62%;"></div>
+                  </div>
+                  <div class="npk-reading" id="textOC">0.68%</div>
+                  <span class="npk-state optimal">Healthy</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Fertilizer Dosage Action Advice -->
+            <div class="soil-dosage-alert" id="soilDosageAlert">
+              <div class="alert-icon">⚡</div>
+              <div class="alert-body">
+                <strong>Smart Fertilizer Recommendation:</strong>
+                <span id="dosageAdviceText">Apply 15 kg Urea + 5 kg Zinc Sulphate per acre before tomorrow's irrigation for maximum chlorophyll boost.</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 4: MARKET MANDI PRICE TRACKER & PROFIT CALCULATOR -->
+    <section class="section market-mandi-section" id="market-mandi">
+      <div class="container">
+        <div class="section-header text-center">
+          <span class="section-tag">Market Intelligence</span>
+          <h2 class="section-title">Mandi Prices & Farm Profit Forecaster</h2>
+          <p class="section-subtitle">
+            Never get cheated by middlemen. Check live terminal mandi rates, track wholesale trends, and estimate your net harvest profit.
+          </p>
+        </div>
+
+        <div class="mandi-grid">
+          <!-- Price Trends Table -->
+          <div class="mandi-table-card">
+            <div class="table-top-bar">
+              <h3 class="table-title">Live Spot Rates Across APMC Mandis</h3>
+              <input type="text" id="mandiSearchInput" placeholder="Filter by crop (e.g. Wheat, Cotton)..." class="mandi-search-input">
+            </div>
+            <div class="table-responsive">
+              <table class="mandi-table" id="mandiDataTable">
+                <thead>
+                  <tr>
+                    <th>Commodity</th>
+                    <th>Mandi Market</th>
+                    <th>Current Price</th>
+                    <th>Daily Shift</th>
+                    <th>Recommendation</th>
+                  </tr>
+                </thead>
+                <tbody id="mandiTableBody">
+                  <!-- Dynamically populated via script.js -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Quick Net Profit Calculator -->
+          <div class="profit-calculator-card">
+            <div class="calc-header">
+              <span class="calc-icon">💰</span>
+              <div>
+                <h3 class="calc-title">Harvest Profit Calculator</h3>
+                <span class="calc-sub">Estimate your net farm earnings</span>
+              </div>
+            </div>
+            <form id="profitCalcForm" class="profit-form">
+              <div class="calc-input-group">
+                <label for="calcCropSelect">Select Crop</label>
+                <select id="calcCropSelect">
+                  <option value="wheat">Wheat (Grain)</option>
+                  <option value="rice" selected>Paddy / Rice (Basmati)</option>
+                  <option value="maize">Maize / Corn</option>
+                  <option value="soybean">Soybean</option>
+                  <option value="cotton">Cotton</option>
+                  <option value="tomato">Tomato (Horticulture)</option>
+                </select>
+              </div>
+
+              <div class="calc-row">
+                <div class="calc-input-group">
+                  <label for="calcAcres">Acres Cultivated</label>
+                  <input type="number" id="calcAcres" min="0.5" max="500" step="0.5" value="3">
+                </div>
+                <div class="calc-input-group">
+                  <label for="calcYieldPerAcre">Est. Yield (Quintals/Acre)</label>
+                  <input type="number" id="calcYieldPerAcre" min="1" max="150" value="22">
+                </div>
+              </div>
+
+              <div class="calc-row">
+                <div class="calc-input-group">
+                  <label for="calcCostPerAcre">Total Input Cost (₹/Acre)</label>
+                  <input type="number" id="calcCostPerAcre" min="1000" max="100000" value="14000">
+                </div>
+                <div class="calc-input-group">
+                  <label for="calcExpectedPrice">Selling Price (₹/Quintal)</label>
+                  <input type="number" id="calcExpectedPrice" min="500" max="30000" value="3850">
+                </div>
+              </div>
+
+              <div class="calc-output-box">
+                <div class="out-item">
+                  <span class="out-label">Gross Revenue:</span>
+                  <span class="out-value" id="grossRevenueText">₹254,100</span>
+                </div>
+                <div class="out-item">
+                  <span class="out-label">Total Cultivation Cost:</span>
+                  <span class="out-value red" id="totalCostText">₹42,000</span>
+                </div>
+                <div class="out-item highlight">
+                  <span class="out-label">Estimated Net Profit:</span>
+                  <span class="out-value green" id="netProfitText">₹212,100</span>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TESTIMONIALS / FARMER SUCCESS STORIES -->
+    <section class="section testimonials-section">
+      <div class="container">
+        <div class="section-header text-center">
+          <span class="section-tag">Farmer Testimonials</span>
+          <h2 class="section-title">Trusted by Thousands Across the Soil</h2>
+          <p class="section-subtitle">Real experiences from farmers who transformed their productivity using AgriGPT.</p>
+        </div>
+
+        <div class="testimonials-grid">
+          <div class="testimonial-card">
+            <div class="quote-icon">“</div>
+            <p class="quote-text">
+              "AgriGPT saved 4 acres of my tomato crop from Early Blight. The instant leaf scan identified the fungus on day one and recommended an organic neem spray that cured it without costly chemicals!"
+            </p>
+            <div class="farmer-profile">
+              <div class="farmer-avatar">🌾</div>
+              <div>
+                <h4 class="farmer-name">Rajeshwar Patil</h4>
+                <span class="farmer-loc">Nashik, Maharashtra • 6 Acres Horticulture</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="testimonial-card featured">
+            <div class="quote-icon">“</div>
+            <p class="quote-text">
+              "I used the voice feature in Hindi to ask about yellowing wheat leaves. AgriGPT told me it was nitrogen deficiency and recommended the exact zinc-urea dose before the rain. My yield shot up by 28%!"
+            </p>
+            <div class="farmer-profile">
+              <div class="farmer-avatar">🚜</div>
+              <div>
+                <h4 class="farmer-name">Harpreet Singh Dhillon</h4>
+                <span class="farmer-loc">Ludhiana, Punjab • 18 Acres Wheat & Paddy</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="testimonial-card">
+            <div class="quote-icon">“</div>
+            <p class="quote-text">
+              "The soil moisture and weather advisory is unbelievable. I cut diesel pump running hours by 30% because I knew exactly when rain was coming. An absolute blessing for small farmers."
+            </p>
+            <div class="farmer-profile">
+              <div class="farmer-avatar">🌱</div>
+              <div>
+                <h4 class="farmer-name">Bhavani Amma</h4>
+                <span class="farmer-loc">Mandya, Karnataka • 3.5 Acres Sugarcane</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ SECTION -->
+    <section class="section faq-section" id="faq">
+      <div class="container">
+        <div class="section-header text-center">
+          <span class="section-tag">Frequently Asked Questions</span>
+          <h2 class="section-title">Got Questions? We Have Answers</h2>
+        </div>
+
+        <div class="faq-accordion" id="faqAccordion">
+          <div class="faq-item active">
+            <button type="button" class="faq-question" aria-expanded="true">
+              <span>Is AgriGPT free for smallholder farmers?</span>
+              <span class="faq-toggle-icon">−</span>
+            </button>
+            <div class="faq-answer">
+              <p>Yes! AgriGPT's core disease diagnostics, crop rotation advisor, mandi pricing, and local weather forecasts are 100% free for all farmers. We believe AI technology must empower rural growers without paywalls.</p>
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <button type="button" class="faq-question" aria-expanded="false">
+              <span>Does AgriGPT work offline or in poor mobile connectivity zones?</span>
+              <span class="faq-toggle-icon">+</span>
+            </button>
+            <div class="faq-answer">
+              <p>Yes. AgriGPT is designed as a progressive lightweight application. Once loaded, our lightweight neural edge model runs leaf disease diagnostics directly in your browser without requiring high-speed broadband in remote farm fields.</p>
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <button type="button" class="faq-question" aria-expanded="false">
+              <span>How accurate is the plant disease vision detection?</span>
+              <span class="faq-toggle-icon">+</span>
+            </button>
+            <div class="faq-answer">
+              <p>Our computer vision neural network is trained on over 250,000 peer-reviewed agricultural pathological specimens across 85+ crop varieties, delivering an empirical diagnostic accuracy rate of 98.4%.</p>
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <button type="button" class="faq-question" aria-expanded="false">
+              <span>Can I speak to AgriGPT in my mother tongue?</span>
+              <span class="faq-toggle-icon">+</span>
+            </button>
+            <div class="faq-answer">
+              <p>Yes. AgriGPT includes multi-lingual speech recognition and audio readout in English, Hindi, Punjabi, Marathi, Telugu, Spanish, Kiswahili and more languages. Simply click the voice microphone icon in the chat!</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA BANNER SECTION -->
+    <section class="cta-banner-section">
+      <div class="container">
+        <div class="cta-banner-card">
+          <div class="cta-content">
+            <h2 class="cta-title">Ready to Transform Your Harvest with AI?</h2>
+            <p class="cta-desc">Join over 120,000 progressive growers leveraging precision artificial intelligence for healthier crops and higher profits.</p>
+            <div class="cta-btns">
+              <a href="#disease-detector" class="btn btn-primary btn-lg">
+                <span class="btn-icon">🔬</span> Test Free Disease Scanner
+              </a>
+              <button type="button" class="btn btn-outline-white btn-lg" id="btnCtaChat">
+                <span class="btn-icon">💬</span> Chat With AgriGPT Now
+              </button>
+            </div>
+          </div>
+          <div class="cta-graphic">
+            <div class="cta-circle-badge">
+              <span>98.4%</span>
+              <small>Accuracy</small>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- SITE FOOTER -->
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div class="footer-col brand-col">
+        <div class="footer-brand">
+          <div class="logo-icon-wrap small">
+            <svg class="logo-svg" viewBox="0 0 40 40" fill="none">
+              <rect width="40" height="40" rx="8" fill="#10B981"/>
+              <path d="M20 7C14 11 11 17 11 23C11 28 15 32 20 32C25 32 29 28 29 23C29 17 26 11 20 7Z" fill="#E8F5E9"/>
+              <path d="M20 12V28M20 18L15 22M20 22L25 26" stroke="#047857" stroke-width="2.2" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <span class="brand-title">Agri<span class="accent-text">GPT</span></span>
+        </div>
+        <p class="footer-bio">Empowering agriculture with next-generation artificial intelligence, computer vision, and hyper-local climate science.</p>
+        <div class="emergency-tollfree">
+          <span class="tf-icon">📞</span>
+          <div>
+            <span class="tf-label">Kisan Free Agronomy Helpline:</span>
+            <strong>1800-180-1551 (Toll Free)</strong>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-col">
+        <h4 class="footer-heading">AI Tools</h4>
+        <ul class="footer-links">
+          <li><a href="#disease-detector">Plant Disease Vision Scanner</a></li>
+          <li><a href="#crop-advisor">Crop & Soil Rotation Advisor</a></li>
+          <li><a href="#weather-soil">Soil Moisture & NPK Telemetry</a></li>
+          <li><a href="#market-mandi">Mandi Market Rate Tracker</a></li>
+          <li><a href="#market-mandi">Farm Profit Calculator</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4 class="footer-heading">Crop Pathologies</h4>
+        <ul class="footer-links">
+          <li><a href="#disease-detector">Tomato Early & Late Blight</a></li>
+          <li><a href="#disease-detector">Rice Bacterial Leaf Streak</a></li>
+          <li><a href="#disease-detector">Corn Puccinia Rust</a></li>
+          <li><a href="#disease-detector">Apple Venturia Scab</a></li>
+          <li><a href="#disease-detector">Cotton Bollworm & Wilting</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4 class="footer-heading">Accessibility & Tech</h4>
+        <ul class="footer-links">
+          <li><a href="#top">High-Contrast Field Mode</a></li>
+          <li><a href="#top">Text-To-Speech Vernacular</a></li>
+          <li><a href="#top">Offline Edge Machine Learning</a></li>
+          <li><a href="#faq">Privacy & Zero-Data-Selling Policy</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <div class="container bottom-inner">
+        <p>© 2026 AgriGPT. Built for smart, resilient, and climate-positive agriculture worldwide.</p>
+        <div class="social-tags">
+          <span>🌱 Grown with Open Science & Farmers First</span>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- FLOATING INTERACTIVE AGRIGPT CHATBOT WIDGET -->
+  <div class="floating-chat-container" id="floatingChatContainer">
+    <!-- Chat Modal Window -->
+    <div class="chat-modal hidden" id="chatModal" role="dialog" aria-label="AgriGPT Live Assistant Chat">
+      <div class="chat-modal-header">
+        <div class="chat-header-info">
+          <div class="bot-avatar">🌱</div>
+          <div>
+            <h4 class="bot-name">AgriGPT AI Advisor</h4>
+            <span class="bot-status"><span class="status-dot"></span> Online • Expert Agronomist</span>
+          </div>
+        </div>
+        <div class="chat-header-controls">
+          <button type="button" class="btn-chat-tts" id="btnToggleSpeechOutput" title="Toggle audio voice responses">🔊 Voice On</button>
+          <button type="button" class="btn-chat-close" id="btnCloseChat" aria-label="Close chat window">✕</button>
+        </div>
+      </div>
+
+      <!-- Chat Messages Scroll Area -->
+      <div class="chat-messages" id="chatMessages">
+        <div class="message bot-message">
+          <div class="msg-avatar">🌱</div>
+          <div class="msg-bubble">
+            <p>Namaste! I am <strong>AgriGPT</strong>, your 24/7 smart farming advisor. How can I help you today?</p>
+            <p class="msg-sub">Ask me anything about crop diseases, pest remedies, fertilizer doses, soil health, or mandi rates!</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Suggestion Chips inside Chat -->
+      <div class="chat-quick-suggestions">
+        <button type="button" class="chat-chip" data-msg="How to control yellow leaves on tomato?">Tomato leaf yellowing</button>
+        <button type="button" class="chat-chip" data-msg="What is the ideal N-P-K fertilizer ratio for wheat?">Wheat N-P-K dosage</button>
+        <button type="button" class="chat-chip" data-msg="How to prepare organic neem pesticide at home?">DIY Neem spray recipe</button>
+        <button type="button" class="chat-chip" data-msg="When should I irrigate my crop after rainfall?">Irrigation timing</button>
+      </div>
+
+      <!-- Chat Input Area -->
+      <form id="chatInputForm" class="chat-input-bar">
+        <button type="button" class="btn-mic" id="btnVoiceInput" title="Speak your question">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
+        </button>
+        <input type="text" id="chatTextInput" placeholder="Type or speak agricultural question..." autocomplete="off" required>
+        <button type="submit" class="btn-send-chat" aria-label="Send message">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+        </button>
+      </form>
+    </div>
+
+    <!-- Floating Launcher Trigger Button -->
+    <button type="button" class="chat-launcher-btn" id="chatLauncherBtn" aria-label="Open AgriGPT Live Assistant">
+      <div class="launcher-pulse"></div>
+      <div class="launcher-icon">
+        <svg class="chat-bubble-svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+        </svg>
+      </div>
+      <span class="launcher-text">Ask AgriGPT</span>
+    </button>
+  </div>
+
+  <!-- TOAST NOTIFICATION CONTAINER -->
+  <div class="toast-container" id="toastContainer" aria-live="polite"></div>
+
+  <!-- JAVASCRIPT LOGIC -->
+  <script src="script.js"></script>
+</body>
+</html>
